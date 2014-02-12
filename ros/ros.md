@@ -80,8 +80,8 @@
     [admin@MikroTik] > ip firewall nat add chain=srcnat action=masquerade 
     NAT --> chain:srcnat out.Address:pppoe-out1 --> Action --> Action:masquerade
     8.MSS设定
-    MTU: Maxitum Transmission Unit 最大传输单元
-    MSS: Maxitum Segment Size 最大分段大小  MSS=MTU-4
+    MTU: Maxitum Transmission Unit 最大传输单元 1500
+    MSS: Maxitum Segment Size 最大分段大小  MSS=MTU-n*4
     Firewall --> Mangle --> Chain:forward Protocol:6(tcp) In.Interfaces:pppoe-out2 --> Advanced --> TCP MSS:1441-65535 TCP-Flags:syn --> Action:change  MsSS  New-TCP-MSS:1440  
     Firewall --> Mangle --> Chain:forward Protocol:6(tcp) Out.Interfaces:pppoe-out2 --> Advanced --> TCP MSS:1441-65535 TCP-Flags:syn --> Action:change  MsSS  New-TCP-MSS:1440  
     Test: cmd --> ping www.baidu.com -f -l 1440
