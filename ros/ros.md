@@ -49,3 +49,6 @@
     routes --> add --> Dst.address:0.0.0.0/0 Gateway:10.0.0.1 reachable lan Check-Gateway:ping Routing Mark:scb
     routes --> add --> Dst.address:0.0.0.0/0 Gateway:58.23.23.122 reachable lan Check-Gateway:ping Routing Mark:zq
 
+8.ROS -- 查看流量
+
+    Tools --> Torch --> start
