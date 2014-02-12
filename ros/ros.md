@@ -52,3 +52,37 @@
 8.ROS -- 查看流量
 
     Tools --> Torch --> start
+
+9.ROS -- ADSL聚合
+
+    1.add wan1 wan2
+    2.然后添加PPPOE拨号（先添加拨号再手动输入 帐号）：
+    [admin@MikroTik] > :for i from=1 to=4 do= {interface pppoe-client add name=("pppoe-out".$i) user=$i password=$i interface=("wan".$i)}
+    interfaces --> add --> Name:pppoe-out1 Interfaces:wan1 Max-MTU:1480 Max-MRU:1480 --> Dial-out --> user password
+    interfaces --> add --> Name:pppoe-out2 Interfaces:wan2 Max-MTU:1480 Max-MRU:1480 --> Dial-out --> user password
+    3.标记从外网进来的连接（因为外pppoe还没有连接，所以这些标记规则暂时是红色）：
+    [admin@MikroTik] > :for i from=1 to=4 do={/ip firewall mangle add chain=input action=mark-connection new-connection-mark=("pppoe-out".$i."_conn") in-interface=("pppoe-out".$i)}
+    Firewall --> Mangle --> Chain:input in.Interfaces:pppoe-out1 --> Action:mark connection New-Connection-Mark:pppoe-out1_conn
+    Firewall --> Mangle --> Chain:input in.Interfaces:pppoe-out2 --> Action:mark connection New-Connection-Mark:pppoe-out2_conn
+    4.然后标记路由让从哪个接口进来的数据就从哪个接口出去：
+    [admin@MikroTik] >  :for i from=1 to=4 do= {ip firewall mangle add chain=output connection-mark=("pppoe-out".$i."_conn") action=mark-routing new-routing-mark=("to_pppoe-out".$i)}
+    Firewall --> Mangle --> Chain:output Connection-Mark:pppoe-out1_conn --> Action:mark routing New-Connection-Mark:to_pppoe-out1
+    Firewall --> Mangle --> Chain:output Connection-Mark:pppoe-out2_conn --> Action:mark routing New-Connection-Mark:to_pppoe-out2
+    5．然后将所有内网出来的数据通过pcc的both-addresses分成4分并标记连接和路由：
+    [admin@MikroTik] > :for i from=1 to=4 do= {/ip firewall mangle add chain=prerouting src-address-list=lan action=mark-connection new-connection-mark=("conn".$i) per-connection-classifier=("both-addresses:4/".$i) comment=$i{... /ip firewall mangle add chain=prerouting src-address-list=lan-add action=mark-routing new-routing-mark=("rout".($i-2)) connection-mark=("conn".$i)}
+    Mangle --> Chain:prerouting Dst.Address:!10.10.0.0/24 In.Interface:lan --> Advanced --> Per-connection-classifier:both addresses 4 0  -->  extra  -->  Address-Tyype::local  -->>Action :mark connection New-connection--Mark:pppoe-out1_conn  
+    Mangle --> Chain:prerouting In.Interface:lan connection-Mark:pppoe-out1_conn --> Action :mark routing New-connection-Mark:to_pppoe-out1
+    6.为每个路由标记添加路由并添加pppoe-out4为默认路由：
+    [admin@MikroTik] > :for i from=2 to=41 do= {ip route add dst-address=0.0.0.0/0 gateway=("pppoe-out".$i) routing-mark=("rout".$i)}
+    [admin@MikroTik] >ip routed add dst-address=0.0.0.0/0 gateway=pppoe-out41
+    ip --> routes --> Dst.Address:0.0.0.0/0 Gateway:pppoe-out1 reachable 
+    7．最后做NAT伪装：
+    [admin@MikroTik] > ip firewall nat add chain=srcnat action=masquerade 
+    NAT --> chain:srcnat out.Address:pppoe-out1 --> Action --> Action:masquerade
+    8.MSS设定
+    MTU: Maxitum Transmission Unit 最大传输单元
+    MSS: Maxitum Segment Size 最大分段大小  MSS=MTU-4
+    Firewall --> Mangle --> Chain:forward Protocol:6(tcp) In.Interfaces:pppoe-out2 --> Advanced --> TCP MSS:1441-65535 TCP-Flags:syn --> Action:change  MsSS  New-TCP-MSS:1440  
+    Firewall --> Mangle --> Chain:forward Protocol:6(tcp) Out.Interfaces:pppoe-out2 --> Advanced --> TCP MSS:1441-65535 TCP-Flags:syn --> Action:change  MsSS  New-TCP-MSS:1440  
+    Test: cmd --> ping www.baidu.com -f -l 1440
+
