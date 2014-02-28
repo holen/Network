@@ -1,0 +1,66 @@
+#!/bin/bash
+# chkconfig: 35 80 70
+# description: namedx is a dns service
+# pricessname: namedx
+
+# Source function libraty.
+. /etc/init.d/functions
+
+RETVAL=0
+prog="namedx"
+#OPTIONS="--daemon -4"
+PPATH="/data/namedx/"
+CFILE="/data/namedx/namedx.conf"
+
+start() {
+	# remove pid-file
+	[ -f /var/run/namedx.pid ]
+	rm -rf /var/run/namedx.pid
+				
+        # Start daemons.
+        [ -x $PPATH$prog ] || \
+            { echo "FATAL: No such programme";exit 4; }
+        [ -f $CFILE ] || \
+            { echo "FATAL: config file does not exist";exit 6; }
+        echo -n $"Starting $prog: "
+        $PPATH$prog &
+        RETVAL=$?
+        [ $RETVAL -eq 0 ] && success $"$base startup" || failure $"$base startup"
+        echo
+	return $RETVAL
+}
+
+stop() {
+        # Stop daemons.
+        echo -n $"Shutting down $prog: "
+        killproc $prog
+        RETVAL=$?
+        echo
+        [ $RETVAL -eq 0 ] && rm -f /var/run/namedx.pid
+        return $RETVAL
+}
+
+# call the function we defined
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  restart|reload)
+        stop
+        start
+        RETVAL=$?
+        ;;
+  status)
+        status $prog
+        RETVAL=$?
+        ;;
+  *)
+        echo $"Usage: $0 {start|stop|restart|reload|status}"
+        exit 2
+esac
+ 
+exit $RETVAL
+
