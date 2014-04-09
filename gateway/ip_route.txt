@@ -1,0 +1,22 @@
+ipcalc 220.120.126.240/255.255.255.240
+
+echo "100     ISP1" >> /etc/iproute2/rt_tables
+ip route add 220.120.126.240/28 dev eth0 src 220.120.126.240/28 table ISP1
+ip route add default via 220.120.126.241 dev eth0 table ISP1
+ip rule add from 220.120.126.240/28 lookup ISP1 prio 26000
+
+ip route 
+ip rule show
+ip rule show table ISP1
+ip rule show ISP1
+cat /etc/iproute2/rt_tables
+ip route add 220.120.126.240/28 dev eth0 src 220.120.126.240/28 table ISP1
+ip route del 220.120.126.240/28 dev eth0  proto kernel  scope link  src 220.120.126.242
+
+head -n 1 iproute.sh  | perl -ne 'chomp; $o = $_; foreach (42 .. 54) {$n = $o; $n =~ s/242/2$_/; print "$n\n"}'
+seq 42 54 | xargs -I {} curl -m 1 --interface 220.120.126.2{} ip.cn
+
+mtr -n --address=220.120.126.245 8.8.8.8
+
+route add -net 220.120.126.240 netmask 255.255.255.240 gw 220.120.126.241 dev eth0
+

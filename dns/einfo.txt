@@ -37,3 +37,4 @@ perl Makefile.PL
 make     
 make install
 
+yum install glibc.i686

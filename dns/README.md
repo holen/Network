@@ -6,6 +6,11 @@
     install Sys::Syslog     
     install Data::Dumper     
     install Getopt::Long
+    yum install gcc
+    perl -MCPAN -e 'install Net::DNS'
+    perl -MCPAN -e 'install Sys::Syslog'
+    perl -MCPAN -e 'install Getopt::Long'
+    perl -MCPAN -e 'install Data::Dumper'
 
 Install ip 纯真库
 
