@@ -1,0 +1,35 @@
+# Double gateway
+
+WAN-IP
+
+    NAT (in) - - - - - - - - - - Ubuntu 12.04 - - - - - - - - - - - - NAT (out)
+
+Gateway1
+
+    10.0.0.2 <-> 10.0.140.75 (eth0) || (eth1) 10.20.10.231 <-> 10.20.10.1
+
+vim /etc/network/interfaces
+
+    #The primary network interface
+    auto eth0
+    iface eth0 inet static
+    address 10.0.140.75
+    netmask 255.255.0.0
+    gateway 10.0.0.2
+    dns-nameservers 8.8.8.8
+
+    auto eth1
+    iface eth1 inet static
+    address 10.20.10.231
+    netmask 255.255.255.0
+
+echo "100   ISP1" >> /etc/iproute2/rt_tables  
+
+ip route add 10.20.10.0/24 dev eth1 src 10.20.10.231 table ISP1  
+ip route add default via 10.20.10.1 dev eth1 table ISP1  
+ip rule add from 10.20.10.0/24 lookup ISP1 prio 26000  
+ip rule  
+
+curl --interface 10.20.10.231 ip.cn  
+ping -I 10.0.140.75 8.8.8.8  
+ping -I 10.20.10.231 8.8.8.8  
