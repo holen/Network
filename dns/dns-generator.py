@@ -171,7 +171,8 @@ class DNSGenerator(object):
         exclude_regex = re.compile(exclude) if exclude else None;
         for index in range(from_index, to_index + 1):
             ip = regex.replace('*', str(index));
-            if(not exclude_regex or not exclude_regex.match(ip)):
+            # if(not exclude_regex or not exclude_regex.match(ip)):
+            if(not exclude_regex or not exclude_regex.search(ip)):
                 ip_list.append(self.get_natip(ip));
         return ip_list;
 

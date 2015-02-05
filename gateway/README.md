@@ -1,4 +1,13 @@
 # Gateway on ubuntu
+防火墙脚本的一般结构
+
+    1.设置网段、网卡、IP地址等变量
+    2.加载包过滤相关的内核模块
+        FTP相关：ip_nat_ftp、ip_conntrack_ftp
+    3.确认开启路由转发功能
+        /sbin/sysctl -w net.ipv4.ip_forward=1
+        echo 1 > /proc/sys/net/ipv4/ip_forward
+
 cat /etc/network/interfaces
 
     auto lo
@@ -24,6 +33,14 @@ cat /etc/network/interfaces
 NAT映射
 
     iptables -t nat -A POSTROUTING -s 10.1.1.0/255.255.255.0 -j MASQUERADE
+
+Save
+
+    iptables-save > /etc/iptables-script
+
+Restore
+
+    /sbin/iptables-restore /etc/iptables-script # echo > /etc/rc.local
 
 Test
 

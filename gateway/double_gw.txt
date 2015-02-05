@@ -28,6 +28,7 @@ echo "100   ISP1" >> /etc/iproute2/rt_tables
 ip route add 10.20.10.0/24 dev eth1 src 10.20.10.231 table ISP1  
 ip route add default via 10.20.10.1 dev eth1 table ISP1  
 ip rule add from 10.20.10.0/24 lookup ISP1 prio 26000  
+ip route
 ip rule  
 
 curl --interface 10.20.10.231 ip.cn  

@@ -104,3 +104,15 @@
 >[H3C] interface  GigabitEthernet 1/0/1  
 >[H3C-GigabitEthernet1/0/1] dhcp-snooping trust  
 >[H3C-GigabitEthernet1/0/1] quit  
+
+ip bind
+
+    system-view
+    interface GigabitEthernet 1/0/18
+    display user-bind
+    绑定
+    user-bind mac-address 0026-1838-97e6
+    解绑
+    undo user-bind ip-address 10.0.80.33 mac-address  0026-1838-97e6
+    最后save
+

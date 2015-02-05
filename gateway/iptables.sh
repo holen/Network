@@ -1,5 +1,7 @@
 #!/bin/bash
 
+/sbin/modprobe ip_tables
+/sbin/modprobe ip_nat_ftp
 iptables -F 
 iptables -X
 iptables -Z
