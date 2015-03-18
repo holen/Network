@@ -1,0 +1,47 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+allow-hotplug eth0
+iface eth0 inet static
+address 10.0.0.5
+netmask 255.255.0.0
+
+allow-hotplug eth1
+iface eth1 inet static
+address 10.20.10.1
+netmask 255.255.255.0
+
+allow-hotplug eth2
+iface eth2 inet static
+address 10.20.11.1
+netmask 255.255.255.0
+
+allow-hotplug eth4
+iface eth4 inet static
+address 10.20.110.1
+netmask 255.255.255.0
+
+# allow-hotplug eth5
+# iface eth5 inet static
+# address 220.160.111.186
+# netmask 255.255.255.252
+
+allow-hotplug eth6
+iface eth6 inet static
+address 11.0.33.205
+netmask 255.255.255.248
+post-up /etc/init.d/ipaliases start eth6
+pre-down /etc/init.d/ipaliases stop eth6
+
+allow-hotplug eth7
+iface eth7 inet static
+address 58.2.3.164
+netmask 255.255.255.240
+post-up /etc/init.d/ipaliases start eth7
+pre-down /etc/init.d/ipaliases stop eth7
+
