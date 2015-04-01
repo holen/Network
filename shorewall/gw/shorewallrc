@@ -1,0 +1,22 @@
+#
+# Created by Shorewall Core version 4.5.5.3 configure -  Sun Oct 21 01:51:25 GMT 2012
+#
+HOST=debian
+PREFIX=/usr                             
+SHAREDIR=${PREFIX}/share                
+LIBEXECDIR=${PREFIX}/share              
+PERLLIBDIR=${PREFIX}/share/shorewall    
+CONFDIR=/etc                            
+SBINDIR=/sbin                           
+MANDIR=${PREFIX}/share/man              
+INITDIR=/etc/init.d                     
+INITSOURCE=init.debian.sh               
+INITFILE=$PRODUCT                       
+AUXINITSOURCE=
+AUXINITFILE=
+SYSTEMD=                                
+SYSCONFFILE=default.debian              
+SYSCONFDIR=/etc/default                 
+SPARSE=Yes                              
+ANNOTATED=                              
+VARDIR=/var/lib                         

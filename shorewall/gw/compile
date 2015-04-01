@@ -1,0 +1,42 @@
+use strict;
+use lib '/usr/share/shorewall';
+use Shorewall::Chains qw(ensure_nat_chain add_rule insert_rule set_optflags);
+use Shorewall::IPAddrs qw(ip_range_explicit);
+use Shorewall::Config qw(:DEFAULT :internal);
+
+my $fn = open_file 'nat_zones';
+my $natmap_name = 'TransIP';
+
+my $chainref = ensure_nat_chain $natmap_name;
+my $pr_chainref = ensure_nat_chain qw/POSTROUTING/;
+set_optflags($chainref, 2);
+
+my %seen_zone;
+my $count;
+while ( read_a_line( PLAIN_READ ) ) {
+    my ($zoneid, $range) = /^(\d+)\s+([\d\.\-\,]+)/ or next;
+
+    # max to 255 (100 + 155)
+    next unless $zoneid >= 1 && $zoneid <= 155;
+    $zoneid += 100;
+
+    my @addrs = map {ip_range_explicit($_)} split /\,/, $range;
+
+    # add zones to POSTROUTING chain
+    if ( ! $seen_zone{$zoneid} ++ ) {
+        add_rule $pr_chainref, "-s 10.${zoneid}.0.0/16 -j $natmap_name";
+        progress_message3 "-s 10.${zoneid}.0.0/16 -j $natmap_name";
+    }
+
+    # add rules for each elink servers
+    foreach my $address (@addrs) {
+        my ($sub4addr) = $address =~ /(\d+)$/;
+        add_rule $chainref, "-s 10.${zoneid}.$sub4addr.0/24 -j SNAT --to-source $address";
+        progress_message3 "-s 10.${zoneid}.$sub4addr.0/24 -j SNAT --to-source $address";
+        $count ++;
+    }
+}
+
+progress_message3 "nat count: $count";
+
+1;

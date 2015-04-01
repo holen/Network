@@ -1,0 +1,44 @@
+#
+# Shorewall version 4 - Params File
+#
+# /etc/shorewall/params
+#
+#	Assign any variables that you need here.
+#
+#	It is suggested that variable names begin with an upper case letter
+#	to distinguish them from variables used internally within the
+#	Shorewall programs
+#
+#	Example:
+#
+#		NET_IF=eth0
+#		NET_BCAST=130.252.100.255
+#		NET_OPTIONS=routefilter,norfc1918
+#
+#	Example (/etc/shorewall/interfaces record):
+#
+#		net	$NET_IF		$NET_BCAST	$NET_OPTIONS
+#
+#	The result will be the same as if the record had been written
+#
+#		net	eth0		130.252.100.255	routefilter,norfc1918
+#
+###############################################################################
+
+LOC_IF=eth0
+
+DMZ1_IF=eth1
+
+#LAST LINE -- DO NOT REMOVE
+ISP1_IF=eth2
+ISP1_GW=1.1.1.1
+ISP1_IP=1.1.1.2
+ISP1_ZONE=1.1.1.0/24
+
+ISP2_IF=eth3
+ISP2_GW=2.2.2.1
+ISP2_IP=2.2.2.2
+ISP2_ZONE=2.2.2.0/24
+
+
+#DMZ2_IF=eth2

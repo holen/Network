@@ -1,0 +1,5 @@
+#Tunnel Name|Local inner IP|Remote inner IP|Remote Gateway|Remote Subnet
+#Tunnel name should not be over 5 chars for shorewall to work
+
+#tun1    172.16.2.2    172.16.2.1    221.5.45.80 172.16.2.1,10.10.10.0/24
+

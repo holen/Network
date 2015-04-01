@@ -1,0 +1,12 @@
+#
+# Shorewall version 4 - Hosts file
+#
+# For information about entries in this file, type "man shorewall-hosts"
+#
+# The manpage is also online at
+# http://www.shorewall.net/manpages/shorewall-hosts.html
+#
+###############################################################################
+#ZONE	HOST(S)					OPTIONS
+
+#tun1    tun+:172.16.2.1,10.10.10.0/24

@@ -1,0 +1,12 @@
+#
+# Shorewall version 4 - Providers File
+#
+# For information about entries in this file, type "man shorewall-providers"
+#
+# For additional information, see http://shorewall.net/MultiISP.html
+#
+############################################################################################
+#NAME	NUMBER	MARK	DUPLICATE	INTERFACE	GATEWAY		OPTIONS		COPY
+ISP1    1   0x10000 main $ISP1_IF:$ISP1_IP     $ISP1_GW      track,balance=1   $LOC_IF,$DMZ1_IF
+#ISP1    1   0x10000 main $ISP1_IF:$ISP1_IP     $ISP1_GW      track,balance=1   $LOC_IF,$DMZ1_IF,$DMZ2_IF
+ISP2    2   0x20000 main $ISP2_IF:$ISP2_IP     $ISP2_GW      track,balance=1   $LOC_IF,$DMZ1_IF

@@ -1,0 +1,20 @@
+#
+# Shorewall version 4 - Interfaces File
+#
+# For information about entries in this file, type "man shorewall-interfaces"
+#
+# The manpage is also online at
+# http://www.shorewall.net/manpages/shorewall-interfaces.html
+#
+###############################################################################
+#FORMAT 2
+###############################################################################
+#ZONE		INTERFACE		OPTIONS
+
+#net     $ISP1_IF    tcpflags,nosmurfs,routefilter,logmartians,routeback
+loc     $LOC_IF     detect  tcpflags,nosmurfs,routefilter,logmartians,routeback
+dmz1    $DMZ1_IF    -       tcpflags,dhcp,nosmurfs,routefilter,logmartians,routeback
+net     $ISP1_IF    -       tcpflags,nosmurfs,routefilter,logmartians,routeback
+net     $ISP2_IF    -       tcpflags,nosmurfs,routefilter,logmartians,routeback
+#dmz2    $DMZ2_IF     tcpflags,dhcp,nosmurfs,routefilter,logmartians,routeback
+#-	tun+	-

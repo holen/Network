@@ -1,0 +1,29 @@
+#
+# Shorewall version 4 - route rules File
+#
+# For information about entries in this file, type "man shorewall-rtrules"
+#
+# For additional information, see http://www.shorewall.net/MultiISP.html
+####################################################################################
+#SOURCE			DEST			PROVIDER	PRIORITY	MASK
+
+$ISP1_ZONE	-	ISP1	1002
+$ISP2_ZONE	-	ISP2	1001
+
+
+# ----  mark >= 1000 ----
+## lo       221.5.45.80  ISP2    1000
+
+#10.102.0.0/16   -   ISP2    11999
+#10.30.10.0/24   -   ISP1    11999
+10.0.82.0/24   -   ISP2    11999
+
+# ----  mark >= 26000 ----
+## 10.20.10.0/24     221.5.45.80    main    26000
+
+
+# office network
+#10.30.10.201	-	ISP1	26000
+#10.0.0.0/16	-	ISP1	26100
+#10.20.10.0/24	-	ISP1	26100
+10.50.10.0/24	-	ISP1	26100
