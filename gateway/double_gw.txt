@@ -1,5 +1,4 @@
-# Double gateway
-
+# Double gateway 
 WAN-IP
 
     NAT (in) - - - - - - - - - - Ubuntu 12.04 - - - - - - - - - - - - NAT (out)
@@ -22,6 +21,12 @@ vim /etc/network/interfaces
     iface eth1 inet static
     address 10.20.10.231
     netmask 255.255.255.0
+    post-up ip route add 10.20.10.0/24 dev eth1 src 10.20.10.231 table ISP1
+    post-up ip route add default via 10.20.10.1 dev eth1 table ISP1
+    post-up ip rule add from 10.20.10.0/24 lookup ISP1 prio 26000
+    pre-down ip rule del from 10.20.10.0/24 lookup ISP1 prio 26000
+    pre-down ip route del default via 10.20.10.1 dev eth1 table ISP1
+    pre-down ip route del 10.20.10.0/24 dev eth1 src 10.20.10.231 table ISP1
 
 echo "100   ISP1" >> /etc/iproute2/rt_tables  
 
