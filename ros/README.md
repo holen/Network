@@ -17,12 +17,12 @@
     Network: 10.0.0.0  
     
     Interface: wan  
-    Address: 110.80.33.203/29  
-    Network: 110.80.33.200
+    Address: 110.80.30.203/29  
+    Network: 110.80.30.200
     
     Interface: wan-liantong  
-    Address: 58.23.3.162/28  
-    Network: 58.23.3.160
+    Address: 58.23.30.162/28  
+    Network: 58.23.30.160
     
 3. 设置伪装
 
