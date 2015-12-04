@@ -1,0 +1,20 @@
+external.rotation: same-same
+method: username none
+
+client pass {
+        from: 0.0.0.0/0 to: 0.0.0.0/0
+        log: error # connect disconnect
+}
+client block {
+        from: 0.0.0.0/0 to: 0.0.0.0/0
+        log: connect error
+}
+pass {
+        from: 0.0.0.0/0 to: 0.0.0.0/0
+        protocol: tcp udp
+}
+block {
+        from: 0.0.0.0/0 to: 0.0.0.0/0
+        log: connect error
+}
+
